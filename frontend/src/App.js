@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Pages from './pages';
+import Navigation from './components/Navigation';
 
 function App() {
   return (
