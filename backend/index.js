@@ -1,10 +1,19 @@
 console.log('testing hello world');
 const express = require('express');
+const authMiddleware = require('./auth-middleware');
 const { Client } = require('pg');
 // const cors = require('cors');
 const { graphql, buildSchema } = require('graphql');
 const { ruruHTML } = require("ruru/server");
 const { createHandler } = require('graphql-http/lib/use/express');
+const firebase = require('firebase-admin');
+const credentials = require('./service-credential-key.json');
+
+firebase.initializeApp({
+    credential: firebase.credential.cert(credentials)
+})
+console.log(credentials);
+
 const port = process.env.PORT || 4000;
 const app = express();
 
@@ -64,6 +73,8 @@ app.all(
         rootValue: root,
     })
 );
+
+app.use('/', authMiddleware);
 
 app.get('/', (req, res) => {
     res.type("html");
