@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { initializeApp } from 'firebase/app';
-import { EmailAuthProvider, getAuth } from 'firebase/auth';
+import { EmailAuthProvider, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 // import * as firebase from 'firebase';
 import * as firebaseui from 'firebaseui';
 // const firebaseui = require('firebaseui');
@@ -25,7 +25,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const ui = new firebaseui.auth.AuthUI(auth);
 const uiConfig = {
+  callbacks: {
+    signInWithEmailAndPassword: function(authResult, redirectUrl) {
+        console.log('signing in', authResult, ' ', redirectUrl);
+    }
+  },
   signInFlow: 'popup',
+  signInSuccessUrl: 'https://localhost:3000',
   signInOptions: [
     {
       provider: EmailAuthProvider.PROVIDER_ID,
