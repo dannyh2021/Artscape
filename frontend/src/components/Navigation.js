@@ -1,14 +1,34 @@
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const LargeContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+const Container = styled.div`
+
+`;
 
 const Navigation = () => {
     return (
-        <div>
-            <Link to='/'>Hello</Link>
-            <Link to='/explore'>Explore</Link>
-            <Link to='/create'>Create</Link>
-            <input placeholder='search'></input>
-            <Link to='/login'>Log In</Link>
-        </div>
+        <LargeContainer>
+            <Container>
+                <Link to='/'>Home</Link>
+            </Container>
+            <Container>
+                <Link to='/explore'>Explore</Link>
+            </Container>
+            <Container>
+                <Link to='/create'>Create</Link>
+            </Container>
+            <Container>
+                <input placeholder='search'></input>
+            </Container>
+            <Container>
+                <Link to='/login'>Log In</Link>
+            </Container>
+        </LargeContainer>
     );
 };
 

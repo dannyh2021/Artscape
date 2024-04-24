@@ -10,42 +10,42 @@ import { EmailAuthProvider, getAuth, signInWithEmailAndPassword } from 'firebase
 import * as firebaseui from 'firebaseui';
 // const firebaseui = require('firebaseui');
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDb8L06jQSUByvPyjKSXLGsbx6-1XgoJ2o",
-  authDomain: "artscape-121ae.firebaseapp.com",
-  projectId: "artscape-121ae",
-  storageBucket: "artscape-121ae.appspot.com",
-  messagingSenderId: "641908100895",
-  appId: "1:641908100895:web:9a4a2c34c7a4c635e8ea2a",
-  measurementId: "G-LR33F7MW2J"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDb8L06jQSUByvPyjKSXLGsbx6-1XgoJ2o",
+//   authDomain: "artscape-121ae.firebaseapp.com",
+//   projectId: "artscape-121ae",
+//   storageBucket: "artscape-121ae.appspot.com",
+//   messagingSenderId: "641908100895",
+//   appId: "1:641908100895:web:9a4a2c34c7a4c635e8ea2a",
+//   measurementId: "G-LR33F7MW2J"
+// };
 
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
-const ui = new firebaseui.auth.AuthUI(auth);
-const uiConfig = {
-  callbacks: {
-    signInWithEmailAndPassword: function(authResult, redirectUrl) {
-        console.log('signing in', authResult, ' ', redirectUrl);
-    }
-  },
-  signInFlow: 'popup',
-  signInSuccessUrl: 'https://localhost:3000',
-  signInOptions: [
-    {
-      provider: EmailAuthProvider.PROVIDER_ID,
-      signInMethod: EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD
-    }
-  ]
-};
-ui.start('#firebaseui-auth-container', uiConfig);
+// const auth = getAuth(app);
+// const ui = new firebaseui.auth.AuthUI(auth);
+// const uiConfig = {
+//   callbacks: {
+//     signInWithEmailAndPassword: function(authResult, redirectUrl) {
+//         console.log('signing in', authResult, ' ', redirectUrl);
+//     }
+//   },
+//   signInFlow: 'popup',
+//   signInSuccessUrl: 'https://localhost:3000',
+//   signInOptions: [
+//     {
+//       provider: EmailAuthProvider.PROVIDER_ID,
+//       signInMethod: EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD
+//     }
+//   ]
+// };
+// ui.start('#firebaseui-auth-container', uiConfig);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <h1>Testing Hello World</h1>
-    <div id="firebaseui-auth-container"></div>
+    {/* <div id="firebaseui-auth-container"></div> */}
     <App />
   </React.StrictMode>
 );
