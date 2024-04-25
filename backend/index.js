@@ -8,6 +8,7 @@ const { ruruHTML } = require("ruru/server");
 const { createHandler } = require('graphql-http/lib/use/express');
 const firebase = require('firebase-admin');
 const credentials = require('./service-credential-key.json');
+require('dotenv').config();
 
 firebase.initializeApp({
     credential: firebase.credential.cert(credentials)
@@ -64,6 +65,28 @@ var root = {
 //   messagingSenderId: "641908100895",
 //   appId: "1:641908100895:web:9a4a2c34c7a4c635e8ea2a",
 //   measurementId: "G-LR33F7MW2J"
+
+// Load the AWS SDK
+const AWS = require('aws-sdk');
+// set up the region
+AWS.config.update({
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    region: 'us-east-2'
+});
+
+// Create S3 Service object
+const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+
+// Call S3 to list the buckets
+s3.listBuckets(function (err, data) {
+    if (err) {
+        console.log('Error: ', err);
+    } else {
+        console.log('Success: ', data.Buckets);
+        console.log('data: ', data);
+    }
+});
 
 // Create and use the GraphQL handler.
 app.all(

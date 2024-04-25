@@ -17,6 +17,8 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
 `;
 
 const SearchContainer = styled.div`
@@ -29,11 +31,6 @@ const SearchContainer = styled.div`
     flex: 1 1 auto
 `;
 
-const Text = styled.div`
-    font-weight: 600;
-    font-size: 16px;
-`;
-
 const linkStyle = {
     textDecoration: 'none',
     color: 'black'
@@ -43,7 +40,7 @@ const Navigation = () => {
     return (
         <LargeContainer>
             <Container>
-                <Link style={linkStyle} to='/'><Text>Home</Text></Link>
+                <Link style={linkStyle} to='/'>Home</Link>
             </Container>
             <Container>
                 <Link style={linkStyle} to='/explore'>Explore</Link>
