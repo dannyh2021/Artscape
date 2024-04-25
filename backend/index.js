@@ -7,7 +7,10 @@ const { graphql, buildSchema } = require('graphql');
 const { ruruHTML } = require("ruru/server");
 const { createHandler } = require('graphql-http/lib/use/express');
 const firebase = require('firebase-admin');
+const { ApolloServer } = require('apollo-server-express');
 const credentials = require('./service-credential-key.json');
+const { initializeDatabase } = require('./database');
+const { initializeImageStorage } = require('./imageStorage');
 require('dotenv').config();
 
 firebase.initializeApp({
@@ -18,24 +21,8 @@ console.log(credentials);
 const port = process.env.PORT || 4000;
 const app = express();
 
-const client = new Client({
-    user: 'postgres',
-    password: '123',
-    host: 'localhost', 
-    port:'5432',
-    database: 'postgres' });
-
-client
-.connect()
-.then(() => {
-    console.log('Connected to PostgreSQL database');
-})
-.catch((err) => {
-    console.error('Error connecting to PostgreSQL database', err);
-}); 
-
-// app.use(helmet());
-// app.use(cors());
+initializeDatabase();
+const s3 = initializeImageStorage();
 
 const schema = buildSchema(`
     type Query {
@@ -50,34 +37,6 @@ var root = {
     }
 };
 
-//graphql({
-//    schema,
-//    source: "{ hello }",
-//    rootValue: root,
-//}).then(response => {
-//    console.log(response);
-//})
-
-//   apiKey: "AIzaSyDb8L06jQSUByvPyjKSXLGsbx6-1XgoJ2o",
-//   authDomain: "artscape-121ae.firebaseapp.com",
-//   projectId: "artscape-121ae",
-//   storageBucket: "artscape-121ae.appspot.com",
-//   messagingSenderId: "641908100895",
-//   appId: "1:641908100895:web:9a4a2c34c7a4c635e8ea2a",
-//   measurementId: "G-LR33F7MW2J"
-
-// Load the AWS SDK
-const AWS = require('aws-sdk');
-// set up the region
-AWS.config.update({
-    accessKeyId: process.env.ACCESS_KEY,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    region: 'us-east-2'
-});
-
-// Create S3 Service object
-const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
-
 // Call S3 to list the buckets
 s3.listBuckets(function (err, data) {
     if (err) {
@@ -88,19 +47,49 @@ s3.listBuckets(function (err, data) {
     }
 });
 
+// console.log('aws.s3: ', new AWS.S3().getObject({
+//     Bucket: 'artscape-images',
+//     Key: '0DB3C375-8794-473C-B8A4-4417F6FF6000.jpg'
+// }, function(err, data) {
+//     if (!err) {
+//         // console.log(data.Body.toString());
+//     }
+// }));
+
+const presignedUrl = s3.getSignedUrl('getObject', {
+    Bucket: 'artscape-images',
+    Key: '0DB3C375-8794-473C-B8A4-4417F6FF6000.jpg',
+    Expires: 60
+});
+
+// console.log('presignedUrl', presignedUrl);
+
 // Create and use the GraphQL handler.
-app.all(
-    "/graphql",
-    createHandler({
-        schema: schema,
-        rootValue: root,
-    })
-);
+// app.all(
+//     "/graphql",
+//     createHandler({
+//         schema: schema,
+//         rootValue: root,
+//     })
+// );
+
+const typeDefs = gql`
+    type Note {
+        id: ID!
+        content: String!
+        author: User!
+    }
+`;
+
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    validationRules: [(depthLimit(5), createComplexityLimitRule(1000))]
+});
 
 app.use('/', authMiddleware);
 
 app.get('/', (req, res) => {
-    res.type("html");
-    res.end(ruruHTML({ endpoint: "/graphql" }));
+    res.send('Hello World Server');
 });
 app.listen({ port }, () => console.log(`listening on port ${port}`));
