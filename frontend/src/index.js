@@ -44,7 +44,6 @@ import * as firebaseui from 'firebaseui';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <h1>Testing Hello World</h1>
     {/* <div id="firebaseui-auth-container"></div> */}
     <App />
   </React.StrictMode>
