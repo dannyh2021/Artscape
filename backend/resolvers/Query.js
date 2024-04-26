@@ -4,8 +4,8 @@ module.exports = {
         const test = {
             id: 1,
             username: 1,
-            password: 1
+            email: 1
         }
-        return [];
+        return [test];
     }
 };

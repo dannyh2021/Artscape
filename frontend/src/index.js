@@ -41,23 +41,24 @@ import * as firebaseui from 'firebaseui';
 // };
 // ui.start('#firebaseui-auth-container', uiConfig);
 
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'https://api.example.com',
+  uri: 'http://localhost:4000/api',
   cache: new InMemoryCache(),
   // Enable sending cookies over cross-origin requests
   credentials: 'include'
 });
 
-console.log(client);
+// console.log(client);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    {/* <div id="firebaseui-auth-container"></div> */}
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <ApolloProvider client={client}>
+            <App />
+        </ApolloProvider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
