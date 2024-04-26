@@ -1,5 +1,9 @@
 const { Client } = require('pg');
 
+const testing = () => {
+    
+};
+
 const initializeDatabase = () => {
     const client = new Client({
         user: 'postgres',
@@ -13,6 +17,7 @@ const initializeDatabase = () => {
         .connect()
         .then(() => {
             console.log('Connected to PostgreSQL database');
+            testing();
         })
         .catch((err) => {
             console.error('Error connecting to PostgreSQL database', err);

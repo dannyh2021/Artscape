@@ -1,11 +1,6 @@
-console.log('testing hello world');
 const express = require('express');
 const authMiddleware = require('./auth-middleware');
-const { Client } = require('pg');
-// const cors = require('cors');
-const { graphql, buildSchema } = require('graphql');
-const { ruruHTML } = require("ruru/server");
-const { createHandler } = require('graphql-http/lib/use/express');
+const { buildSchema } = require('graphql');
 const firebase = require('firebase-admin');
 const { ApolloServer } = require('apollo-server-express');
 const credentials = require('./service-credential-key.json');
@@ -21,7 +16,7 @@ console.log(credentials);
 const port = process.env.PORT || 4000;
 const app = express();
 
-initializeDatabase();
+// initializeDatabase();
 const s3 = initializeImageStorage();
 
 const schema = buildSchema(`
@@ -56,36 +51,54 @@ s3.listBuckets(function (err, data) {
 //     }
 // }));
 
+// // Option 3: Passing parameters separately (other dialects)
+// const sequelize = new Sequelize('database', 'username', 'password', {
+//     host: 'localhost',
+//     dialect: /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */
+//   });
+
+const { Sequelize } = require('sequelize');
+
+const sequelize = new Sequelize('postgres://postgres:123@localhost:5432/postgres');
+
+const Testing1 = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+      } catch (error) {
+        console.error('Unable to connect to the database:', error);
+      };
+}
+
+Testing1();
+
+// console.log('sequelize: ', sequelize);
+
 const presignedUrl = s3.getSignedUrl('getObject', {
     Bucket: 'artscape-images',
     Key: '0DB3C375-8794-473C-B8A4-4417F6FF6000.jpg',
     Expires: 60
 });
 
-// console.log('presignedUrl', presignedUrl);
+const typeDefs = require('./schema');
+let resolvers = {};
+resolvers.Query = require('./resolvers/Query');
+console.log('resolvers: ', resolvers.Query);
 
-// Create and use the GraphQL handler.
-// app.all(
-//     "/graphql",
-//     createHandler({
-//         schema: schema,
-//         rootValue: root,
-//     })
-// );
-
-const typeDefs = gql`
-    type Note {
-        id: ID!
-        content: String!
-        author: User!
-    }
-`;
+const depthLimit = require('graphql-depth-limit');
+const { createComplexityLimitRule } = require('graphql-validation-complexity');
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    validationRules: [(depthLimit(5), createComplexityLimitRule(1000))]
+    // validationRules: [(depthLimit(5), createComplexityLimitRule(1000))]
 });
+
+const Temp = async () => {
+    await server.start();
+    server.applyMiddleware({ app, path: '/api' });
+}
+Temp();
 
 app.use('/', authMiddleware);
 

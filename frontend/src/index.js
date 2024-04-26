@@ -41,6 +41,17 @@ import * as firebaseui from 'firebaseui';
 // };
 // ui.start('#firebaseui-auth-container', uiConfig);
 
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'https://api.example.com',
+  cache: new InMemoryCache(),
+  // Enable sending cookies over cross-origin requests
+  credentials: 'include'
+});
+
+console.log(client);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
