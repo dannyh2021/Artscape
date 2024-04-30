@@ -1,3 +1,5 @@
+const { getImageUrl } = require('../imageStorage');
+
 module.exports = {
     users: () => {
         console.log('resolvers users');
@@ -7,5 +9,8 @@ module.exports = {
             email: 1
         }
         return [test];
+    },
+    images: () => {
+        return getImageUrl();
     }
 };

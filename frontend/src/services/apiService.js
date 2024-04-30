@@ -18,4 +18,20 @@ const getUsers = async () => {
   .then(res => res.data.users);
 }
 
-module.exports = { getUsers };
+const getImages = async () => {
+  return fetch('http://localhost:4000/api', {
+  method: 'POST',
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    query: `query {
+      images
+    }`
+  })
+})
+.then(res => res.json())
+.then(res => res.data.images);
+}
+
+module.exports = { getUsers, getImages };

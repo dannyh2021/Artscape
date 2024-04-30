@@ -18,7 +18,7 @@ console.log(credentials);
 const port = process.env.PORT || 4000;
 const app = express();
 
-app.use(helmet());
+// app.use(helmet());
 // app.use(cors());
 // const cors = require('cors');
 // const corsOptions = {
@@ -28,8 +28,8 @@ app.use(helmet());
 // app.use(cors(corsOptions));
 app.use(cors());
 
-// initializeDatabase();
-// const s3 = initializeImageStorage();
+initializeDatabase();
+const s3 = initializeImageStorage();
 
 // const schema = buildSchema(`
 //     type Query {
@@ -79,11 +79,12 @@ app.use(cors());
 
 // console.log('sequelize: ', sequelize);
 
-// const presignedUrl = s3.getSignedUrl('getObject', {
-//     Bucket: 'artscape-images',
-//     Key: '0DB3C375-8794-473C-B8A4-4417F6FF6000.jpg',
-//     Expires: 60
-// });
+const presignedUrl = s3.getSignedUrl('getObject', {
+    Bucket: 'artscape-images',
+    Key: '0DB3C375-8794-473C-B8A4-4417F6FF6000.jpg',
+    Expires: 60
+});
+console.log('PRESIGNED URL', presignedUrl);
 
 const typeDefs = require('./schema');
 let resolvers = {};
@@ -106,11 +107,17 @@ const server = new ApolloServer({
     // validationRules: [(depthLimit(5), createComplexityLimitRule(1000))]
 });
 
-const Temp = async () => {
-    await server.start();
-    server.applyMiddleware({ app, path: '/api' });
-}
-Temp();
+
+// const Temp = async () => {
+//     await server.start();
+//     server.applyMiddleware({ app, path: '/api' });
+// }
+// Temp();
+
+server.start().then(res => {
+    server.applyMiddleware({ app, path: '/api'});
+});
+
 
 // app.use(function(req, res, next) {
 //     // res.setHeader('Access-Control-Allow-Origin', '*');
