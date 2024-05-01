@@ -3,6 +3,9 @@ import { initializeApp } from 'firebase/app';
 import { EmailAuthProvider, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 // import * as firebase from 'firebase';
 import * as firebaseui from 'firebaseui';
+// import Modal from '../components/Modal';
+import styled from 'styled-components';
+import { Button, Modal } from '@mui/material';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDb8L06jQSUByvPyjKSXLGsbx6-1XgoJ2o",
@@ -32,17 +35,69 @@ const uiConfig = {
     ]
 };
 
+const LoginButton = styled.button`
+    
+`;
+
+const LoginForm = styled.div`
+    min-height: 400px;
+    padding: 20px 10px 24px;
+    background-color: pink;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    h1 {
+        width: 400px;
+    }
+
+    div {
+        width: 268px;
+        margin: auto;
+        text-align: left;
+    }
+
+    input {
+        width: 268px;
+    }
+`;
 
 const Login = () => {
     // ui.start('#firebaseui-auth-container', uiConfig);
     useEffect(() => {
         const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
-        ui.start('#firebaseui-auth-container', uiConfig);
+        // ui.start('#firebaseui-auth-container', uiConfig);
     });
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     return(
         <React.Fragment>
-            <div id='firebaseui-auth-container'></div>
+            <LoginButton onClick={handleOpen}>Open modal</LoginButton>
+            <Modal
+                open={open}
+                onClose={handleClose}
+            >
+                <LoginForm>
+                    <h1>Welcome to Artscape</h1>
+
+                    <div>
+                        <label>Email</label>
+                        <input type='text' placeholder='Enter Email' />
+                    </div>
+
+                    <div>
+                        <label>Password</label>
+                        <input type='password' placeholder='Enter Password' /><br />
+                    </div>
+        
+                    <button>Login</button>
+                </LoginForm>
+            </Modal>
         </React.Fragment>
     );
 };
