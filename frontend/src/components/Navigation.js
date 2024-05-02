@@ -5,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import React, { useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import Login from './Login';
+import Signup from './Signup';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDb8L06jQSUByvPyjKSXLGsbx6-1XgoJ2o",
@@ -16,21 +18,21 @@ const firebaseConfig = {
     measurementId: "G-LR33F7MW2J"
 };
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);;
+const auth = getAuth(app);
 
-const handleCreateAccount = (email, password) => {
-    // const email = 'test@example.com';
-    // const password = 'hunter2';
-    console.log('creating account: ', email, password);
+// const handleCreateAccount = (email, password) => {
+//     // const email = 'test@example.com';
+//     // const password = 'hunter2';
+//     console.log('creating account: ', email, password);
 
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-            console.log('user: ', userCredentials);
-        })
-        .catch((error) => {
-            console.log('error: ', error);
-        });
-};
+//     createUserWithEmailAndPassword(auth, email, password)
+//         .then((userCredentials) => {
+//             console.log('user: ', userCredentials);
+//         })
+//         .catch((error) => {
+//             console.log('error: ', error);
+//         });
+// };
 
 const LargeContainer = styled.div`
     display: flex;
@@ -118,32 +120,11 @@ const Navigation = () => {
                 <input placeholder='search'></input>
             </SearchContainer>
             <Container>
-                <Link style={linkStyle} to='/login'>Log In</Link>
+                <Login />
             </Container>
             <Container>
-                <Button onClick={handleOpen}>Create Account</Button>
+                <Signup />
             </Container>
-            <Modal open={open} onClose={handleClose}>
-                <SignUpForm>
-                        <h1>Welcome to Artscape</h1>
-                        
-                        <div>
-                            <label>Email</label>
-                            <input type='text' placeholder='Enter Email' value={email}
-                                onChange={handleEmailChange}    
-                            />
-                        </div>
-
-                        <div>
-                            <label>Password</label>
-                            <input type='password' placeholder='Enter Password' value={password} 
-                                onChange={handlePasswordChange}
-                            /><br />
-                        </div>
-        
-                        <button onClick={() => handleCreateAccount(email, password)}>Create Account</button>
-                </SignUpForm>
-            </Modal>
         </LargeContainer>
     );
 };
