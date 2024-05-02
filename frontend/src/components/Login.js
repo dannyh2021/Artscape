@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
-import { handleLogin } from '../services/authenticationService';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { login } from '../services/authenticationService';
 
 const Div = styled.div`
     cursor: pointer;
@@ -34,9 +33,9 @@ const Form = styled.div`
 `;
 
 const testFunction = (email, password) => {
-    handleLogin(email, password)
-    .catch(error => {
-        console.log("TESTING: ", error);
+    login(email, password)
+        .catch(error => {
+            console.log("TESTING: ", error);
         });
 }
 

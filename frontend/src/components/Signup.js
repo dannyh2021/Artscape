@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
-import { handleCreateAccount } from "../services/authenticationService";
+import validator from 'validator';
+import { createAccount } from "../services/authenticationService";
 
 const Div = styled.div`
     cursor: pointer;
@@ -43,6 +44,23 @@ const Signup = () => {
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
 
+    const [showEmailError, setShowEmailError] = useState(false);
+    const [showPasswordError, setShowPasswordError] = useState(false);
+
+    const handleCreateAccount = (email, password) => {
+        const validEmail = validator.isEmail(email);
+        const validPassword = validator.isStrongPassword(password, { minSymbols: 0 });
+
+        console.log('vEmail: ', validEmail, ' vPassword', validPassword);
+        setShowEmailError(!validEmail);
+        setShowPasswordError(!validPassword);
+
+        createAccount(email, password)
+            .catch((error) => {
+            console.log("Sign in error: ", error)
+        });
+    }
+
     return (
         <React.Fragment>
             <Div
@@ -60,13 +78,15 @@ const Signup = () => {
                         <input type='text' placeholder='Enter Email' value={email}
                             onChange={handleEmailChange}    
                         />
+                        {showEmailError && <p>Please enter a valid email.</p>}
                     </div>
 
                     <div>
                         <label>Password</label>
                         <input type='password' placeholder='Enter Password' value={password} 
                             onChange={handlePasswordChange}
-                        /><br />
+                        />
+                        {showPasswordError && <p>Please enter a strong password. (minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1)</p>}
                     </div>
 
                     <button onClick={() => handleCreateAccount(email, password)}>Create Account</button>

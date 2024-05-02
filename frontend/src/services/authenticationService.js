@@ -13,29 +13,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const handleCreateAccount = (email, password) => {
+const createAccount = (email, password) => {
     console.log('creating account: ', email, password);
 
-    createUserWithEmailAndPassword(auth, email, password)
+    return createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
             console.log('user: ', userCredentials);
+            // save credentials
         })
-        .catch((error) => {
-            console.log('error: ', error);
-        });
 };
 
-const handleLogin = (email, password) => {
+const login = (email, password) => {
     console.log('logging in: ', email, password);
 
     return signInWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
             console.log('user: ', userCredentials);
-        })
-        .catch((error) => {
-            console.error('e:', error);
-            throw error;
-        })
+            // save credentials
+        });
     }
 
-export { handleCreateAccount, handleLogin };
+export { createAccount, login };
