@@ -21,13 +21,14 @@ const getImageUrl = () => {
 
     const urls = [];
 
-    for (let i of images) {
-        urls.push(s3.getSignedUrl('getObject', {
-            Bucket: 'artscape-images',
-            Key: 'images/' + i,
-            Expires: 60
-        }));
-    }
+    // temporarily closing this to save memory
+    // for (let i of images) {
+    //     urls.push(s3.getSignedUrl('getObject', {
+    //         Bucket: 'artscape-images',
+    //         Key: 'images/' + i,
+    //         Expires: 60
+    //     }));
+    // }
     
     ;
     return urls;

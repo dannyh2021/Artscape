@@ -1,9 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import Pages from './pages';
-import Navigation from './components/Navigation';
 
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
 import { getUsers } from './services/apiService';
 
 const GET_USERS = gql`
@@ -37,12 +35,6 @@ function App() {
   return (
     <div className="App">
       <Pages />
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-      </header>
-      <p>testing2</p>
     </div>
   );
 }

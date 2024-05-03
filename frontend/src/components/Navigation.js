@@ -39,6 +39,7 @@ const LargeContainer = styled.div`
     flex-direction: row;
     align-items: center;
     height: 56px;
+    margin: 16px;
 `;
 
 const Container = styled.div`
@@ -52,6 +53,8 @@ const Container = styled.div`
     justify-content: center;
     font-weight: 600;
     font-size: 16px;
+    margin-left: 8px;
+    margin-right: 8px;
 `;
 
 const SearchContainer = styled.div`

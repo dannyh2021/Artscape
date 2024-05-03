@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import { login } from '../services/authenticationService';
+import validator from 'validator';
 
 const Div = styled.div`
     cursor: pointer;
@@ -32,13 +33,6 @@ const Form = styled.div`
     }
 `;
 
-const testFunction = (email, password) => {
-    login(email, password)
-        .catch(error => {
-            console.log("TESTING: ", error);
-        });
-}
-
 const Login = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -49,6 +43,20 @@ const Login = () => {
 
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
+
+    const [showEmailError, setShowEmailError] = useState(false);
+    const [showPasswordError, setShowPasswordError] = useState(false);
+
+    const handleLogin = (email, password) => {
+        const validEmail = validator.isEmail(email);
+
+        setShowEmailError(!validEmail);
+
+        login(email, password)
+            .catch(error => {
+                console.log("TESTING: ", error);
+            });
+    }
 
     return (
         <React.Fragment>
@@ -67,6 +75,7 @@ const Login = () => {
                         <input type='text' placeholder='Enter Email' value={email}
                             onChange={handleEmailChange}    
                         />
+                        {showEmailError && <p>Please enter a valid email.</p>}
                     </div>
 
                     <div>
@@ -76,7 +85,7 @@ const Login = () => {
                         /><br />
                     </div>
     
-                    <button onClick={() => testFunction(email, password)}>Log In</button>
+                    <button onClick={() => handleLogin(email, password)}>Log In</button>
                 </Form>
             </Modal>
         </React.Fragment>
